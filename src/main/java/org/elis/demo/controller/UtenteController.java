@@ -20,26 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/utenti")
+@RequestMapping
 public class UtenteController {
 	
 	@Autowired
     private UtenteService utenteService;
 	
-	 @PostMapping
+	 @PostMapping("/admin/cUtente")
 	    public ResponseEntity<UtenteResponseDTO> create(@Valid @RequestBody UtenteCreateRequestDTO request) throws ConflictException {
 	        UtenteResponseDTO dto = utenteService.aggiungi(request);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	    }
 
-	    @PutMapping("/{id}")
+	    @PutMapping("/admin/uUtente/{id}")
 	    public ResponseEntity<UtenteResponseDTO> update(@PathVariable Long id,
 	                                                    @Valid @RequestBody UtenteUpdateRequestDTO request) throws NessunRisultatoException, ConflictException {
 	        UtenteResponseDTO dto = utenteService.modifica(id, request);
 	        return ResponseEntity.ok(dto);
 	    }
 
-	    @DeleteMapping("/{id}")
+	    @DeleteMapping("/all/dUtente/{id}")
 	    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
 	        utenteService.rimuovi(id);
 	        return ResponseEntity.noContent().build();

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cinema")
+@RequestMapping
 public class BigliettoController {
 
 	@Autowired
@@ -29,7 +29,7 @@ public class BigliettoController {
 	@Autowired
 	private UtenteRepositoryJPA utenteRepository;
 	
-	@PostMapping("/aggiungiBiglietto")
+	@PostMapping("/admin/cBiglietto")
 	public ResponseEntity<String> aggiungiBiglietto(@RequestBody Biglietto nuovoBiglietto) {
 	    
 	    // Controlla se lo spettacolo esiste
@@ -71,7 +71,7 @@ public class BigliettoController {
 	    }
 	}
 	
-	@DeleteMapping("/rimuoviBiglietto/{id}")
+	@DeleteMapping("/all/diBiglietto/{id}")
 	public ResponseEntity<String> rimuoviBiglietto(@PathVariable Long id) {
 	    Optional<Biglietto> daRimuovere = bigliettoRepository.findById(id);
 	    

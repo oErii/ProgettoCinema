@@ -21,26 +21,26 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/genere")
+@RequestMapping
 public class GenereController {
 
 	@Autowired
     private GenereService genereS;
 	
-	@PostMapping
+	@PostMapping("/admin/cGenere")
     public ResponseEntity<GenereResponseDTO> create(@Valid @RequestBody GenereCreateRequestDTO request) throws ConflictException {
         GenereResponseDTO dto = genereS.aggiungi(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/uGenere/{id}")
     public ResponseEntity<GenereResponseDTO> update(@PathVariable Long id,
                                                     @Valid @RequestBody GenereUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
         GenereResponseDTO dto = genereS.modifica(id, request);
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/all/dGenere/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
         genereS.rimuovi(id);
         return ResponseEntity.noContent().build();

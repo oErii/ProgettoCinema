@@ -20,26 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/cinema/film")
+@RequestMapping
 public class FilmController {
 
 	@Autowired
 	private FilmService filmS;
 	
-	@PostMapping
+	@PostMapping("/admin/cFilm")
     public ResponseEntity<FilmResponseDTO> create(@Valid @RequestBody FilmCreateRequestDTO request) throws ConflictException, NessunRisultatoException {
         FilmResponseDTO dto = filmS.aggiungi(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/uFilm/{id}")
     public ResponseEntity<FilmResponseDTO> update(@PathVariable Long id,
                                                   @Valid @RequestBody FilmUpdateRequestDTO request) throws NessunRisultatoException, ConflictException {
         FilmResponseDTO dto = filmS.modifica(id, request);
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/all/dFilm/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
         filmS.rimuovi(id);
         return ResponseEntity.noContent().build();

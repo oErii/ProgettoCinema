@@ -22,13 +22,13 @@ public class ProgrammazioneController {
     private SpettacoloService spettacoloService;
 
     // per film
-    @GetMapping("/film/{filmId}")
+    @GetMapping("/{filmId}")
     public ResponseEntity<List<SpettacoloResponseDTO>> perFilm(@PathVariable Long filmId) {
         return ResponseEntity.ok(spettacoloService.listaPerFilm(filmId));
     }
 
     // per data (yyyy-MM-dd)
-    @GetMapping("/data/{data}")
+    @GetMapping("/{data}")
     public ResponseEntity<List<SpettacoloResponseDTO>> perData(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
         return ResponseEntity.ok(spettacoloService.listaPerData(data));
@@ -36,9 +36,7 @@ public class ProgrammazioneController {
 
     // combinato: /all/programmazione?filmId=..&data=yyyy-MM-dd
     @GetMapping
-    public ResponseEntity<List<SpettacoloResponseDTO>> perFiltri(
-            @RequestParam(required = false) Long filmId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+    public ResponseEntity<List<SpettacoloResponseDTO>> perFiltri(@RequestParam(required = false) Long filmId, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
         return ResponseEntity.ok(spettacoloService.listaPerFiltri(filmId, data));
     }
     

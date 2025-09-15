@@ -20,26 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/spettacoli")
+@RequestMapping
 public class SpettacoloController {
 
 	@Autowired
     private SpettacoloService spettacoloService;
 	
-	@PostMapping
+	@PostMapping("/admin/cSpettacolo")
     public ResponseEntity<SpettacoloResponseDTO> create(@Valid @RequestBody SpettacoloCreateRequestDTO request) throws ConflictException, NessunRisultatoException {
         SpettacoloResponseDTO dto = spettacoloService.aggiungi(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/uSpettacolo/{id}")
     public ResponseEntity<SpettacoloResponseDTO> update(@PathVariable Long id,
                                                         @Valid @RequestBody SpettacoloUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
         SpettacoloResponseDTO dto = spettacoloService.modifica(id, request);
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/all/dSpettacolo/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
         spettacoloService.rimuovi(id);
         return ResponseEntity.ok().build();
