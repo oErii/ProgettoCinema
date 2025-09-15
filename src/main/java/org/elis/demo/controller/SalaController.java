@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/cinema")
+@RequestMapping("/sale")
 public class SalaController {
 
 	@Autowired

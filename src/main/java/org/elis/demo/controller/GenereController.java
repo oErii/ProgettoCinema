@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/cinema")
+@RequestMapping("/genere")
 public class GenereController {
 
 	@Autowired

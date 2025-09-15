@@ -1,7 +1,10 @@
 package org.elis.demo.DTO.request;
 
+import org.elis.demo.model.Ruolo;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +24,7 @@ public class RegistrazioneRequestDTO {
 	private String email;
 	@NotBlank
 	private String password;
+	@NotNull
+	private Ruolo ruolo;
 	
 }

@@ -3,7 +3,9 @@ package org.elis.demo.DTO.mapper;
 import org.elis.demo.DTO.request.GenereCreateRequestDTO;
 import org.elis.demo.DTO.response.GenereResponseDTO;
 import org.elis.demo.model.Genere;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GenereMapper {
 	public static Genere toEntity(GenereCreateRequestDTO dto) {
         Genere g = new Genere();

@@ -6,7 +6,9 @@ import org.elis.demo.DTO.response.BigliettoResponseDTO;
 import org.elis.demo.model.Biglietto;
 import org.elis.demo.model.Spettacolo;
 import org.elis.demo.model.Utente;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BigliettoMapper {
 	public static Biglietto toEntity(BigliettoCreateRequestDTO dto, Spettacolo spettacolo, Utente utente) {
         Biglietto b = new Biglietto();

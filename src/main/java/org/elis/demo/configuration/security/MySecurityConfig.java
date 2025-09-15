@@ -1,6 +1,6 @@
 package org.elis.demo.configuration.security;
 
-import org.elis.demo.model.Ruolo;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,14 +17,15 @@ public class MySecurityConfig {
 
 	private final MySecurityFilter filter;
 	
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		http.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(t -> {
 				
 					t.requestMatchers("/all/**").permitAll();
 					t.requestMatchers("/user/**").authenticated();
-					t.requestMatchers("/admin/**").hasRole(Ruolo.ROLE_ADMIN.toString());
+					t.requestMatchers("/admin/**").hasRole("ADMIN");
 					t.anyRequest().authenticated();
 					
 				}

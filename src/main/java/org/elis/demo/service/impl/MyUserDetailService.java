@@ -1,21 +1,23 @@
 package org.elis.demo.service.impl;
 
-import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.repository.UtenteRepositoryJPA;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MyUserDetailService {
+public class MyUserDetailService implements UserDetailsService{
 
 	private final UtenteRepositoryJPA repo;
 	
-	public UserDetails loadUserByUsername(String email) throws NessunRisultatoException {
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return repo.findByEmail(email).orElseThrow(
-            () -> new NessunRisultatoException("Utente non trovato: " + email)
+            () -> new UsernameNotFoundException("Utente non trovato: " + email)
         );
     }
 	

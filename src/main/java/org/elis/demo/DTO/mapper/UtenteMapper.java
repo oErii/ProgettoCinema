@@ -25,6 +25,8 @@ public class UtenteMapper {
 		u.setPassword(request.getPassword());
 		u.setNome(request.getNome());
 		u.setEmail(request.getEmail());
+		u.setRuolo(request.getRuolo());
+
 		return u;
 	}
 	

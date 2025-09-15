@@ -4,7 +4,9 @@ import org.elis.demo.DTO.request.SalaCreateRequestDTO;
 import org.elis.demo.DTO.request.SalaUpdateRequestDTO;
 import org.elis.demo.DTO.response.SalaResponseDTO;
 import org.elis.demo.model.Sala;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SalaMapper {
 	public static Sala toSala(SalaCreateRequestDTO dto) {
         Sala s = new Sala();

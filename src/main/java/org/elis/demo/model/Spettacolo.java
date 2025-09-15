@@ -25,7 +25,7 @@ public class Spettacolo {
 	private double prezzo;
 	
 	@Column(nullable = false)
-	private LocalDateTime orario;
+	private LocalDateTime dataOra;
 
 	@ManyToOne
 	private Film film;
@@ -41,7 +41,7 @@ public class Spettacolo {
 		super();
 		this.id = id;
 		this.prezzo = prezzo;
-		this.orario = orario;
+		this.dataOra = orario;
 	}
 
 	public Spettacolo() {}
@@ -63,11 +63,11 @@ public class Spettacolo {
 	}
 
 	public LocalDateTime getOrario() {
-		return orario;
+		return dataOra;
 	}
 
 	public void setOrario(LocalDateTime orario) {
-		this.orario = orario;
+		this.dataOra = orario;
 	}
 
 	public Film getFilm() {
@@ -96,7 +96,7 @@ public class Spettacolo {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, orario, prezzo);
+		return Objects.hash(id, dataOra, prezzo);
 	}
 
 	@Override
@@ -108,13 +108,13 @@ public class Spettacolo {
 		if (getClass() != obj.getClass())
 			return false;
 		Spettacolo other = (Spettacolo) obj;
-		return id == other.id && Objects.equals(orario, other.orario)
+		return id == other.id && Objects.equals(dataOra, other.dataOra)
 				&& Double.doubleToLongBits(prezzo) == Double.doubleToLongBits(other.prezzo);
 	}
 
 	@Override
 	public String toString() {
-		return "Spettacolo [id=" + id + ", prezzo=" + prezzo + ", orario=" + orario + "]";
+		return "Spettacolo [id=" + id + ", prezzo=" + prezzo + ", orario=" + dataOra + "]";
 	}
 	
 }

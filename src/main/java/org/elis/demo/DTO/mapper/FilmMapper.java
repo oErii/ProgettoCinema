@@ -11,7 +11,9 @@ import org.elis.demo.DTO.response.FilmResponseDTO;
 import org.elis.demo.model.Attore;
 import org.elis.demo.model.Film;
 import org.elis.demo.model.Genere;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FilmMapper {
 	public static Film toEntity(FilmCreateRequestDTO dto, Genere genere, List<Attore> attori) {
         Film f = new Film();

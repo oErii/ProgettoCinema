@@ -2,7 +2,6 @@ package org.elis.demo.configuration.security;
 
 import java.io.IOException;
 
-import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.service.impl.MyUserDetailService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;

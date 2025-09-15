@@ -6,7 +6,9 @@ import org.elis.demo.DTO.response.SpettacoloResponseDTO;
 import org.elis.demo.model.Film;
 import org.elis.demo.model.Sala;
 import org.elis.demo.model.Spettacolo;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SpettacoloMapper {
 	public Spettacolo toSpettacolo(SpettacoloCreateRequestDTO dto, Film film, Sala sala) {
         Spettacolo s = new Spettacolo();

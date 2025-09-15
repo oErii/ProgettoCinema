@@ -10,6 +10,7 @@ import org.elis.demo.model.Utente;
 import org.elis.demo.repository.UtenteRepositoryJPA;
 import org.elis.demo.service.definition.AutenticazioneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
@@ -29,18 +30,25 @@ public class AutenticazioneServiceImpl implements AutenticazioneService{
 	@Autowired
 	private final UtenteMapper uMapper;
 	
+	private final PasswordEncoder passwordEncoder;
+	
 	@Override
 	public UtenteResponseDTO registrazione(RegistrazioneRequestDTO request) throws ConflictException {
-        if (utenteRepository.findByEmail(request.getEmail()).isPresent()) throw new ConflictException("Email già registrata");
-        Utente utente = uMapper.toUtente(request);
-        Utente salvato = utenteRepository.save(utente);
-        return uMapper.toUtenteDTO(salvato);
+		if (utenteRepository.findByEmail(request.getEmail()).isPresent())
+			throw new ConflictException("Email già registrata");
+		Utente utente = uMapper.toUtente(request);
+		utente.setRuolo(request.getRuolo());
+		utente.setPassword(passwordEncoder.encode(request.getPassword()));
+		Utente salvato = utenteRepository.save(utente);
+		return uMapper.toUtenteDTO(salvato);
 	}
 	
 	@Override
 	public UtenteResponseDTO login(LoginRequestDTO request) throws NessunRisultatoException {
-        if (!utenteRepository.findByEmailAndPassword(request.getEmail(), request.getPassword()).isPresent()) throw new NessunRisultatoException("Utente non trovato, riprova");
-        Utente trovato = utenteRepository.findByEmailAndPassword(request.getEmail(), request.getPassword()).get();
-        return uMapper.toUtenteDTO(trovato);
+		Utente utente = utenteRepository.findByEmail(request.getEmail())
+			.orElseThrow(() -> new NessunRisultatoException("Utente non trovato, riprova"));
+	    if (!passwordEncoder.matches(request.getPassword(), utente.getPassword()))
+	            throw new NessunRisultatoException("Credenziali non valide");
+	    return uMapper.toUtenteDTO(utente);
 	}
 }

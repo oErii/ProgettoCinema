@@ -4,7 +4,9 @@ import org.elis.demo.DTO.request.AttoreCreateRequestDTO;
 import org.elis.demo.DTO.request.AttoreUpdateRequestDTO;
 import org.elis.demo.DTO.response.AttoreResponseDTO;
 import org.elis.demo.model.Attore;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AttoreMapper {
 	public static Attore toEntity(AttoreCreateRequestDTO dto) {
         Attore a = new Attore();
