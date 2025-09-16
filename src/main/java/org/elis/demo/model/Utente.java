@@ -21,6 +21,7 @@ import jakarta.persistence.GenerationType;
 @Entity
 public class Utente implements UserDetails {
 
+
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;

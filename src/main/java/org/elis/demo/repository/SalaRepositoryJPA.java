@@ -9,5 +9,4 @@ public interface SalaRepositoryJPA extends JpaRepository<Sala, Long>{
 
 	Optional<Sala> findByNome(String nome);
 
-	
 }

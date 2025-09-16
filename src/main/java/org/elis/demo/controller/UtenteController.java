@@ -7,7 +7,6 @@ import org.elis.demo.error.exceptions.ConflictException;
 import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.service.definition.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,19 +28,19 @@ public class UtenteController {
 	 @PostMapping("/admin/cUtente")
 	    public ResponseEntity<UtenteResponseDTO> create(@Valid @RequestBody UtenteCreateRequestDTO request) throws ConflictException {
 	        UtenteResponseDTO dto = utenteService.aggiungi(request);
-	        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+	        return ResponseEntity.ok().body(dto);
 	    }
 
 	    @PutMapping("/admin/uUtente/{id}")
 	    public ResponseEntity<UtenteResponseDTO> update(@PathVariable Long id,
 	                                                    @Valid @RequestBody UtenteUpdateRequestDTO request) throws NessunRisultatoException, ConflictException {
 	        UtenteResponseDTO dto = utenteService.modifica(id, request);
-	        return ResponseEntity.ok(dto);
+	        return ResponseEntity.ok().body(dto);
 	    }
 
 	    @DeleteMapping("/admin/dUtente/{id}")
 	    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
 	        utenteService.rimuovi(id);
-	        return ResponseEntity.noContent().build();
+	        return ResponseEntity.ok().build();
 	    }
 }

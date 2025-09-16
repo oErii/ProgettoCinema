@@ -34,13 +34,13 @@ public class BigliettoController {
     @PutMapping("/admin/uBiglietto/{id}")
     public ResponseEntity<BigliettoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody BigliettoUpdateRequestDTO request)
             throws NessunRisultatoException, ConflictException {
-        return ResponseEntity.ok(bigliettoService.modifica(id, request));
+        return ResponseEntity.ok().body(bigliettoService.modifica(id, request));
     }
 
     @DeleteMapping("/admin/dBiglietto/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id)
             throws NessunRisultatoException {
         bigliettoService.rimuovi(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

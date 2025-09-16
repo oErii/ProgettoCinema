@@ -1,14 +1,15 @@
 package org.elis.demo.DTO.response;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import lombok.Data;
 
 @Data
 public class ValidationErrorMessageDTO {
-	  public String timestamp = java.time.LocalDateTime.now().toString();
-	  public int statusCode;
-	  public String statusSpring;
-	  public String targetUrl;
-	  public Map<String, String> fieldErrors;
+	private LocalDateTime timestamp;
+	private int statusCode;
+	private String statusName;
+	private String targetUrl;
+	private Map<String, String> fieldErrors;
 }

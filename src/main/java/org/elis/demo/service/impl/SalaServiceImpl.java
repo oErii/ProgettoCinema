@@ -34,31 +34,29 @@ public class SalaServiceImpl implements SalaService{
         }
 
         Sala entity = SalaMapper.toSala(request);
-        entity.setNome(nome); // forza normalizzazione
         Sala saved = salaRepository.save(entity);
 
         return sMapper.toResponse(saved);
     }
 
-    @Override
-    @Transactional
-    public SalaResponseDTO modifica(Long id, SalaUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
-        Sala sala = salaRepository.findById(id)
-                .orElseThrow(() -> new NessunRisultatoException("Sala non trovata"));
+	@Override
+	@Transactional
+	public SalaResponseDTO modifica(Long id, SalaUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
+	    Sala sala = salaRepository.findById(id)
+	            .orElseThrow(() -> new NessunRisultatoException("Sala non trovata"));
 
-        // se cambia nome, controlla conflitto
-        if (request.getNome() != null) {
-            String nuovoNome = (request.getNome());
-            Optional<Sala> same = salaRepository.findByNome(nuovoNome);
-            if (same.isPresent() && !same.get().getId().equals(sala.getId())) {
-                throw new ConflictException("Sala già esistente");
-            }
-        }
+	    String nuovoNome = request.getNome();
+	    if (nuovoNome != null) {
+	        Optional<Sala> same = salaRepository.findByNome(nuovoNome);
+	        if (same.isPresent()&&!same.get().getId().equals(sala.getId())) { //(e non è lo stesso record che sto modificando)
+	                throw new ConflictException("Sala già esistente");
+	            }
+	        }
 
-        sMapper.applyUpdates(sala, request);
-        Sala saved = salaRepository.save(sala);
-        return sMapper.toResponse(saved);
-    }
+	    sMapper.applyUpdates(sala, request);
+	    Sala saved = salaRepository.save(sala);
+	    return sMapper.toResponse(saved);
+	}
 
     @Override
     @Transactional

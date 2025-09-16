@@ -1,12 +1,7 @@
 package org.elis.demo.service.impl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
 import java.util.Optional;
 
 import org.elis.demo.DTO.mapper.SpettacoloMapper;
@@ -67,27 +62,27 @@ public class SpettacoloServiceImpl implements SpettacoloService {
         Spettacolo s = spettacoloRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Spettacolo non trovato"));
 
-        Film maybeFilm = null;
+        Film nuovoFilm = null;
         if (request.getFilmTitolo() != null) {
-            maybeFilm = filmRepository.findByTitolo(request.getFilmTitolo())
+            nuovoFilm = filmRepository.findByTitolo(request.getFilmTitolo())
                     .orElseThrow(() -> new NessunRisultatoException("Film non trovato"));
         }
 
-        Sala maybeSala = null;
+        Sala nuovaSala = null;
         if (request.getSalaNome() != null) {
-            maybeSala = salaRepository.findByNome(request.getSalaNome())
+            nuovaSala = salaRepository.findByNome(request.getSalaNome())
                     .orElseThrow(() -> new NessunRisultatoException("Sala non trovata"));
         }
 
-        Long salaIdToCheck = (maybeSala != null) ? maybeSala.getId() : s.getSala().getId();
+        Long salaIdCheck = (nuovaSala != null) ? nuovaSala.getId() : s.getSala().getId();
         LocalDateTime dataOraToCheck = (request.getDataOra() != null) ? request.getDataOra() : s.getOrario();
 
-        Optional<Spettacolo> sameSlot = spettacoloRepository.findBySala_IdAndDataOra(salaIdToCheck, dataOraToCheck);
+        Optional<Spettacolo> sameSlot = spettacoloRepository.findBySala_IdAndDataOra(salaIdCheck, dataOraToCheck);
         if (sameSlot.isPresent() && !sameSlot.get().getId().equals(s.getId())) {
             throw new ConflictException("Sala occupata a quell'orario");
         }
 
-        sMapper.applyUpdates(s, request, maybeFilm, maybeSala);
+        sMapper.applyUpdates(s, request, nuovoFilm, nuovaSala);
         Spettacolo saved = spettacoloRepository.save(s);
         return sMapper.toResponse(saved);
     }
@@ -98,78 +93,6 @@ public class SpettacoloServiceImpl implements SpettacoloService {
         Spettacolo s = spettacoloRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Spettacolo non trovato"));
         spettacoloRepository.delete(s);
-    }
-    
-    
-    
-    
-    
-    @Override
-    public List<SpettacoloResponseDTO> listaPerFilm(Long filmId) {
-        List<Spettacolo> entities = spettacoloRepository.findByFilm_IdOrderByDataOraAsc(filmId);
-        List<SpettacoloResponseDTO> result = new ArrayList<>();
-        for (Spettacolo s : entities) {
-            result.add(sMapper.toResponse(s));
-        }
-        return result;
-    }
-
-    @Override
-    public List<SpettacoloResponseDTO> listaPerData(LocalDate data) {
-        LocalDateTime start = data.atStartOfDay();
-        LocalDateTime end = data.atTime(LocalTime.MAX);
-        List<Spettacolo> entities = spettacoloRepository.findByDataOraBetweenOrderByDataOraAsc(start, end);
-        List<SpettacoloResponseDTO> result = new ArrayList<>();
-        for (Spettacolo s : entities) {
-            result.add(sMapper.toResponse(s));
-        }
-        return result;
-    }
-
-  
-    @Override
-    public List<SpettacoloResponseDTO> listaPerFiltri(Long filmId, LocalDate data) {
-        List<Spettacolo> base;
-
-        if (data != null) {
-            LocalDateTime start = data.atStartOfDay();
-            LocalDateTime end = data.atTime(LocalTime.MAX);
-            base = spettacoloRepository.findByDataOraBetweenOrderByDataOraAsc(start, end);
-        } else if (filmId != null) {
-            base = spettacoloRepository.findByFilm_IdOrderByDataOraAsc(filmId);
-        } else {
-            base = spettacoloRepository.findAll();
-        }
-
-        List<Spettacolo> filtered = new ArrayList<>();
-        
-
-        for (Spettacolo s : base) {
-            boolean ok = true;
-
-            if (filmId != null) {
-                if (s.getFilm() == null || s.getFilm().getId() == null || !s.getFilm().getId().equals(filmId)) ok = false;
-            }
-
-            if (ok) filtered.add(s);
-            
-        }
-
-        Collections.sort(filtered, new Comparator<Spettacolo>() {
-            @Override
-            public int compare(Spettacolo a, Spettacolo b) {
-                if (a.getOrario() == null && b.getOrario() == null) return 0;
-                if (a.getOrario() == null) return 1;
-                if (b.getOrario() == null) return -1;
-                return a.getOrario().compareTo(b.getOrario());
-            }
-        });
-
-        List<SpettacoloResponseDTO> result = new ArrayList<>();
-        for (Spettacolo s : filtered) {
-            result.add(sMapper.toResponse(s));
-        }
-        return result;
     }
     
 }

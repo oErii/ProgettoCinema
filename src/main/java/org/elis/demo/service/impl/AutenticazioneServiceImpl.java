@@ -36,10 +36,10 @@ public class AutenticazioneServiceImpl implements AutenticazioneService{
 	public UtenteResponseDTO registrazione(RegistrazioneRequestDTO request) throws ConflictException {
 		if (utenteRepository.findByEmail(request.getEmail()).isPresent())
 			throw new ConflictException("Email già registrata");
-		Utente utente = uMapper.toUtente(request);
-		utente.setRuolo(request.getRuolo());
-		utente.setPassword(passwordEncoder.encode(request.getPassword()));
-		Utente salvato = utenteRepository.save(utente);
+		Utente utente = uMapper.toUtente(request); //conversione a entità
+		utente.setRuolo(request.getRuolo()); //set ruolo
+		utente.setPassword(passwordEncoder.encode(request.getPassword())); //codifica password
+		Utente salvato = utenteRepository.save(utente); //salva
 		return uMapper.toUtenteDTO(salvato);
 	}
 	
@@ -47,7 +47,7 @@ public class AutenticazioneServiceImpl implements AutenticazioneService{
 	public UtenteResponseDTO login(LoginRequestDTO request) throws NessunRisultatoException {
 		Utente utente = utenteRepository.findByEmail(request.getEmail())
 			.orElseThrow(() -> new NessunRisultatoException("Utente non trovato, riprova"));
-	    if (!passwordEncoder.matches(request.getPassword(), utente.getPassword()))
+	    if (!passwordEncoder.matches(request.getPassword(), utente.getPassword())) //controlla se la password è corretta
 	            throw new NessunRisultatoException("Credenziali non valide");
 	    return uMapper.toUtenteDTO(utente);
 	}

@@ -7,7 +7,6 @@ import org.elis.demo.error.exceptions.ConflictException;
 import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.service.definition.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,20 +28,20 @@ public class FilmController {
 	@PostMapping("/admin/cFilm")
     public ResponseEntity<FilmResponseDTO> create(@Valid @RequestBody FilmCreateRequestDTO request) throws ConflictException, NessunRisultatoException {
         FilmResponseDTO dto = filmS.aggiungi(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PutMapping("/admin/uFilm/{id}")
     public ResponseEntity<FilmResponseDTO> update(@PathVariable Long id,
                                                   @Valid @RequestBody FilmUpdateRequestDTO request) throws NessunRisultatoException, ConflictException {
         FilmResponseDTO dto = filmS.modifica(id, request);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/admin/dFilm/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
         filmS.rimuovi(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 	
 }

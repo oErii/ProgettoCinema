@@ -7,7 +7,6 @@ import org.elis.demo.error.exceptions.ConflictException;
 import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.service.definition.GenereService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,20 +29,20 @@ public class GenereController {
 	@PostMapping("/admin/cGenere")
     public ResponseEntity<GenereResponseDTO> create(@Valid @RequestBody GenereCreateRequestDTO request) throws ConflictException {
         GenereResponseDTO dto = genereS.aggiungi(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PutMapping("/admin/uGenere/{id}")
     public ResponseEntity<GenereResponseDTO> update(@PathVariable Long id,
                                                     @Valid @RequestBody GenereUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
         GenereResponseDTO dto = genereS.modifica(id, request);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/admin/dGenere/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
         genereS.rimuovi(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 	 
 }

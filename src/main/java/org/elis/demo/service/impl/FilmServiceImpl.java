@@ -46,7 +46,7 @@ public class FilmServiceImpl implements FilmService{
             throw new ConflictException("Titolo già esistente");
         }
 
-        // Genere: usa se esiste, altrimenti crealo (stile lezioni)
+        // Genere: usa se esiste, altrimenti crealo
         Genere genere = genereRepository.findById(request.getGenereId())
                 .orElseThrow(() -> new NessunRisultatoException("Genere non trovato"));
         
@@ -73,7 +73,6 @@ public class FilmServiceImpl implements FilmService{
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Film non trovato"));
 
-        // titolo in conflitto?
         if (request.getTitolo() != null) {
             String nuovo = (request.getTitolo());
             Optional<Film> same = filmRepository.findByTitolo(nuovo);
@@ -82,7 +81,6 @@ public class FilmServiceImpl implements FilmService{
             }
         }
 
-        // Genere opzionale
         Genere maybeGenere = null;
         if (request.getGenereNome() != null) {
             Optional<Genere> og = genereRepository.findByNome(request.getGenereNome());
@@ -94,7 +92,7 @@ public class FilmServiceImpl implements FilmService{
             }
         }
 
-        // Attori opzionali (sostituzione lista completa)
+        // Attori (sostituzione lista completa)
         List<Attore> maybeAttori = null;
         if (request.getAttori() != null) {
             List<Attore> attori = new ArrayList<Attore>();

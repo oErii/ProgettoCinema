@@ -39,10 +39,9 @@ public class UtenteServiceImpl implements UtenteService{
 
         Utente entity = UtenteMapper.toUtente(request);
         
-        entity.setRuolo(request.getRuolo());
+        entity.setRuolo(request.getRuolo()); //da mettere nel mapper
 		entity.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        entity.setEmail(email);
         Utente saved = utenteRepository.save(entity);
 
         return uMapper.toUtenteDTO(saved);

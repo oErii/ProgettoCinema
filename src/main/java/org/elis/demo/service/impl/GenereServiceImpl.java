@@ -30,7 +30,6 @@ public class GenereServiceImpl implements GenereService{
             throw new ConflictException("Genere già esistente");
         }
         Genere entity = GenereMapper.toEntity(request);
-        entity.setNome(nome);
         Genere saved = genereRepository.save(entity);
         return GenereMapper.toResponse(saved);
     }
@@ -42,9 +41,9 @@ public class GenereServiceImpl implements GenereService{
                 .orElseThrow(() -> new NessunRisultatoException("Genere non trovato"));
 
         if (request.getNome() != null) {
-            String nuovoNome = request.getNome();
+        	String nuovoNome = request.getNome();
             Optional<Genere> same = genereRepository.findByNome(nuovoNome);
-            if (same.isPresent() && !same.get().getId().equals(genere.getId())) {
+            if (same.isPresent() && !same.get().getId().equals(genere.getId())) { //(e non è lo stesso record che sto modificando)
                 throw new ConflictException("Genere già esistente");
             }
             GenereMapper.applyUpdate(genere, nuovoNome);

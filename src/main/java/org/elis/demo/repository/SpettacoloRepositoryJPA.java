@@ -9,6 +9,7 @@ import org.elis.demo.model.Spettacolo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpettacoloRepositoryJPA extends JpaRepository<Spettacolo, Long>{
+	
     Optional<Spettacolo> findBySala_IdAndDataOra(Long salaId, LocalDateTime dataOra);
     
     List<Spettacolo> findByFilm_IdOrderByDataOraAsc(Long filmId);

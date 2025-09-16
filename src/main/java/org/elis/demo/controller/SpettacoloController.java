@@ -7,7 +7,6 @@ import org.elis.demo.error.exceptions.ConflictException;
 import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.service.definition.SpettacoloService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,14 +28,13 @@ public class SpettacoloController {
 	@PostMapping("/admin/cSpettacolo")
     public ResponseEntity<SpettacoloResponseDTO> create(@Valid @RequestBody SpettacoloCreateRequestDTO request) throws ConflictException, NessunRisultatoException {
         SpettacoloResponseDTO dto = spettacoloService.aggiungi(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PutMapping("/admin/uSpettacolo/{id}")
-    public ResponseEntity<SpettacoloResponseDTO> update(@PathVariable Long id,
-                                                        @Valid @RequestBody SpettacoloUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
+    public ResponseEntity<SpettacoloResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SpettacoloUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
         SpettacoloResponseDTO dto = spettacoloService.modifica(id, request);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/admin/dSpettacolo/{id}")

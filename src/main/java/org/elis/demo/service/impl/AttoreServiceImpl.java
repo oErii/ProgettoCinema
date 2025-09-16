@@ -24,63 +24,56 @@ public class AttoreServiceImpl implements AttoreService{
 
 	@Override
     public AttoreResponseDTO aggiungi(AttoreCreateRequestDTO request) throws ConflictException {
-        String nome = request.getNome();
+        //Riceve DTO (nome, cognome)
+		String nome = request.getNome();
         String cognome = request.getCognome();
 
         if (attoreRepository.findByNomeAndCognome(nome, cognome).isPresent()) {
-            throw new ConflictException("Attore già esistente");
+            throw new ConflictException("Attore già esistente");  //Verifica se quell’attore esiste già nel database
         }
-
+        
         Attore entity = AttoreMapper.toEntity(request);
-        entity.setNome(nome);
-        entity.setCognome(cognome);
-
+        
         Attore saved = attoreRepository.save(entity);
+        
         return AttoreMapper.toResponse(saved);
     }
 
 	@Override
 	public AttoreResponseDTO modifica(Long id, AttoreUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
-		Attore attore = attoreRepository.findById(id)
-                .orElseThrow(() -> new NessunRisultatoException("Attore non trovato"));
 
-        String nuovoNome = request.getNome() != null ? request.getNome() : null;
-        String nuovoCognome = request.getCognome() != null ? request.getCognome() : null;
+	    // Cerco l'attore, se non esiste lancio eccezione
+	    Attore attore = attoreRepository.findById(id)
+	            .orElseThrow(() -> new NessunRisultatoException("Attore non trovato"));
 
-        boolean cambianoEntrambi = nuovoNome != null && nuovoCognome != null;
-        boolean cambiaSoloNome = nuovoNome != null && nuovoCognome == null;
-        boolean cambiaSoloCognome = nuovoNome == null && nuovoCognome != null;
+	    // Valori finali (se non arrivano nel DTO, uso quelli già presenti)
+	    String finalNome = request.getNome() != null ? request.getNome() : attore.getNome();
+	    String finalCognome = request.getCognome() != null ? request.getCognome() : attore.getCognome();
 
-        if (cambianoEntrambi) {
-            Optional<Attore> same = attoreRepository.findByNomeAndCognome(nuovoNome, nuovoCognome);
-            if (same.isPresent() && !same.get().getId().equals(attore.getId())) {
-                throw new ConflictException("Attore già esistente");
-            }
-        } else if (cambiaSoloNome) {
-            String cognomeAttuale = attore.getCognome();
-            Optional<Attore> same = attoreRepository.findByNomeAndCognome(nuovoNome, cognomeAttuale);
-            if (same.isPresent() && !same.get().getId().equals(attore.getId())) {
-                throw new ConflictException("Attore già esistente");
-            }
-        } else if (cambiaSoloCognome) {
-            String nomeAttuale = attore.getNome();
-            Optional<Attore> same = attoreRepository.findByNomeAndCognome(nomeAttuale, nuovoCognome);
-            if (same.isPresent() && !same.get().getId().equals(attore.getId())) {
-                throw new ConflictException("Attore già esistente");
-            }
-        }
+	    // Controllo se cambia davvero qualcosa
+	    boolean cambiaNome = !finalNome.equals(attore.getNome());
+	    boolean cambiaCognome = !finalCognome.equals(attore.getCognome());
 
-        if (nuovoNome != null) attore.setNome(nuovoNome);
-        if (nuovoCognome != null) attore.setCognome(nuovoCognome);
+	    if (cambiaNome || cambiaCognome) {
+	        // Controllo se esiste già un attore con la stessa coppia (nome, cognome)
+	        Optional<Attore> same = attoreRepository.findByNomeAndCognome(finalNome, finalCognome);
+	        if (same.isPresent() && !same.get().getId().equals(attore.getId())) {
+	            throw new ConflictException("Attore già esistente");
+	        }
 
-        Attore saved = attoreRepository.save(attore);
-        return AttoreMapper.toResponse(saved);
+	        // Applico le modifiche
+	        attore.setNome(finalNome);
+	        attore.setCognome(finalCognome);
+
+	        attore = attoreRepository.save(attore);
+	    }
+
+	    return AttoreMapper.toResponse(attore);
 	}
 
 	@Override
 	public void rimuovi(Long id) throws NessunRisultatoException {
-		Attore attore = attoreRepository.findById(id)
-                .orElseThrow(() -> new NessunRisultatoException("Attore non trovato"));
+		Attore attore = attoreRepository.findById(id).orElseThrow(() -> new NessunRisultatoException("Attore non trovato"));
         attoreRepository.delete(attore);
 	}
 	
