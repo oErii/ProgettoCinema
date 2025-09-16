@@ -10,6 +10,6 @@ public interface FilmService {
 
 	FilmResponseDTO aggiungi(FilmCreateRequestDTO request) throws ConflictException, NessunRisultatoException;
     FilmResponseDTO modifica(Long id, FilmUpdateRequestDTO request) throws NessunRisultatoException, ConflictException;
-    void rimuovi(Long id) throws NessunRisultatoException;
+    void rimuovi(Long id) throws NessunRisultatoException, ConflictException;
     
 }

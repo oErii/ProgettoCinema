@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class SalaUpdateRequestDTO {
-	private String nome;          // opzionale
+	private String nome;
     @Positive
-    private Long numeroPosti;     // opzionale
+    private Long numeroPosti;
 }

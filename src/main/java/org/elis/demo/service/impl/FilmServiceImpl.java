@@ -16,6 +16,7 @@ import org.elis.demo.model.Genere;
 import org.elis.demo.repository.AttoreRepositoryJPA;
 import org.elis.demo.repository.FilmRepositoryJPA;
 import org.elis.demo.repository.GenereRepositoryJPA;
+import org.elis.demo.repository.SpettacoloRepositoryJPA;
 import org.elis.demo.service.definition.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class FilmServiceImpl implements FilmService{
 	
 	@Autowired
 	private AttoreRepositoryJPA attoreRepository;
+	
+	@Autowired
+	private SpettacoloRepositoryJPA spettacoloRepository;
 	
 	@Override
     @Transactional
@@ -110,9 +114,13 @@ public class FilmServiceImpl implements FilmService{
 
     @Override
     @Transactional
-    public void rimuovi(Long id) throws NessunRisultatoException {
+    public void rimuovi(Long id) throws NessunRisultatoException, ConflictException {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Film non trovato"));
+        if (!spettacoloRepository.findByFilm_IdOrderByDataOraAsc(id).isEmpty()) {
+            throw new ConflictException("Impossibile eliminare il film: sono presenti spettacoli collegati");
+        }
+        
         filmRepository.delete(film);
     }
 	

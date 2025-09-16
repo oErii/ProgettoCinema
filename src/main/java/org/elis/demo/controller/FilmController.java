@@ -40,7 +40,7 @@ public class FilmController {
     }
 
     @DeleteMapping("/admin/dFilm/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
         filmS.rimuovi(id);
         return ResponseEntity.noContent().build();
     }
