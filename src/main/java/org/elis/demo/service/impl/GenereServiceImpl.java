@@ -56,10 +56,14 @@ public class GenereServiceImpl implements GenereService{
 
     @Override
     @Transactional
-    public void rimuovi(Long id) throws NessunRisultatoException {
+    public void rimuovi(Long id) throws NessunRisultatoException, ConflictException {
         Genere genere = genereRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Genere non trovato"));
 
+        if (genere.getFilm() != null && !genere.getFilm().isEmpty()) {
+            throw new ConflictException("Impossibile eliminare: genere associato a uno o più film");
+        }
+        
         genereRepository.delete(genere);
     }
 

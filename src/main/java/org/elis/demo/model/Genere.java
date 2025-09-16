@@ -21,7 +21,7 @@ public class Genere {
 	private String nome;
 	
 	@OneToMany(mappedBy = "genere")
-	List<Film> Film;
+	List<Film> film;
 
 	public Genere(Long id, String nome) {
 		super();
@@ -45,6 +45,16 @@ public class Genere {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	
+	
+	public List<Film> getFilm() {
+		return film;
+	}
+
+	public void setFilm(List<Film> film) {
+		this.film = film;
 	}
 
 	@Override

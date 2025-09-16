@@ -10,6 +10,6 @@ public interface GenereService{
 
 	GenereResponseDTO aggiungi(GenereCreateRequestDTO request) throws ConflictException;
     GenereResponseDTO modifica(Long id, GenereUpdateRequestDTO request) throws ConflictException, NessunRisultatoException;
-    void rimuovi(Long id) throws NessunRisultatoException;
+    void rimuovi(Long id) throws NessunRisultatoException, ConflictException;
 	
 }

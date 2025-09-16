@@ -41,7 +41,7 @@ public class GenereController {
     }
 
     @DeleteMapping("/admin/dGenere/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
         genereS.rimuovi(id);
         return ResponseEntity.noContent().build();
     }
