@@ -58,6 +58,15 @@ public class Sala {
 	public void setNumeroPosti(Long numeroPosto) {
 		this.numeroPosti = numeroPosto;
 	}
+	
+
+	public List<Spettacolo> getSpettacolo() {
+		return spettacolo;
+	}
+
+	public void setSpettacolo(List<Spettacolo> spettacolo) {
+		this.spettacolo = spettacolo;
+	}
 
 	@Override
 	public int hashCode() {

@@ -33,14 +33,13 @@ public class SalaController {
     }
 
     @PutMapping("/admin/uSala/{id}")
-    public ResponseEntity<SalaResponseDTO> update(@PathVariable Long id,
-                                                  @Valid @RequestBody SalaUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
+    public ResponseEntity<SalaResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SalaUpdateRequestDTO request) throws ConflictException, NessunRisultatoException {
         SalaResponseDTO dto = salaS.modifica(id, request);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/admin/dSala/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
         salaS.rimuovi(id);
         return ResponseEntity.noContent().build();
     }

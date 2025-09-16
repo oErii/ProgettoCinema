@@ -62,10 +62,14 @@ public class SalaServiceImpl implements SalaService{
 
     @Override
     @Transactional
-    public void rimuovi(Long id) throws NessunRisultatoException {
+    public void rimuovi(Long id) throws NessunRisultatoException, ConflictException {
         Sala sala = salaRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Sala non trovata"));
 
+        if (sala.getSpettacolo() != null && !sala.getSpettacolo().isEmpty()) {
+            throw new ConflictException("Impossibile eliminare: sala associata a uno o più spettacoli");
+        }
+        
         salaRepository.delete(sala);
     }
 	

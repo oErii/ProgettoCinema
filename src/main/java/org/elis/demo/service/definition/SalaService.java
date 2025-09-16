@@ -10,5 +10,5 @@ public interface SalaService {
 
 	SalaResponseDTO aggiungi(SalaCreateRequestDTO request) throws ConflictException;
     SalaResponseDTO modifica(Long id, SalaUpdateRequestDTO request) throws ConflictException, NessunRisultatoException;
-    void rimuovi(Long id) throws NessunRisultatoException;	
+    void rimuovi(Long id) throws NessunRisultatoException, ConflictException;	
 }
