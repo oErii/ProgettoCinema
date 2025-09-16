@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.elis.demo.DTO.mapper.SpettacoloMapper;
 import org.elis.demo.DTO.request.SpettacoloCreateRequestDTO;
@@ -79,9 +80,9 @@ public class SpettacoloServiceImpl implements SpettacoloService {
         }
 
         Long salaIdToCheck = (maybeSala != null) ? maybeSala.getId() : s.getSala().getId();
-        java.time.LocalDateTime dataOraToCheck = (request.getDataOra() != null) ? request.getDataOra() : s.getOrario();
+        LocalDateTime dataOraToCheck = (request.getDataOra() != null) ? request.getDataOra() : s.getOrario();
 
-        java.util.Optional<Spettacolo> sameSlot = spettacoloRepository.findBySala_IdAndDataOra(salaIdToCheck, dataOraToCheck);
+        Optional<Spettacolo> sameSlot = spettacoloRepository.findBySala_IdAndDataOra(salaIdToCheck, dataOraToCheck);
         if (sameSlot.isPresent() && !sameSlot.get().getId().equals(s.getId())) {
             throw new ConflictException("Sala occupata a quell'orario");
         }
