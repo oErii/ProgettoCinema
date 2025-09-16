@@ -39,7 +39,7 @@ public class SpettacoloController {
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/all/dSpettacolo/{id}")
+    @DeleteMapping("/admin/dSpettacolo/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
         spettacoloService.rimuovi(id);
         return ResponseEntity.ok().build();

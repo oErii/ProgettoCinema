@@ -39,7 +39,7 @@ public class SalaController {
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/all/dSala/{id}")
+    @DeleteMapping("/admin/dSala/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
         salaS.rimuovi(id);
         return ResponseEntity.noContent().build();

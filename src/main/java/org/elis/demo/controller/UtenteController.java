@@ -39,7 +39,7 @@ public class UtenteController {
 	        return ResponseEntity.ok(dto);
 	    }
 
-	    @DeleteMapping("/all/dUtente/{id}")
+	    @DeleteMapping("/admin/dUtente/{id}")
 	    public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException, ConflictException {
 	        utenteService.rimuovi(id);
 	        return ResponseEntity.noContent().build();

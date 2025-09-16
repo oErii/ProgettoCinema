@@ -71,7 +71,7 @@ public class BigliettoController {
 	    }
 	}
 	
-	@DeleteMapping("/all/diBiglietto/{id}")
+	@DeleteMapping("/admin/diBiglietto/{id}")
 	public ResponseEntity<String> rimuoviBiglietto(@PathVariable Long id) {
 	    Optional<Biglietto> daRimuovere = bigliettoRepository.findById(id);
 	    

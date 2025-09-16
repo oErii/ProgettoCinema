@@ -40,7 +40,7 @@ public class UtenteMapper {
     }
 	
 	public UtenteResponseDTO toUtenteDTO(Utente u) {
-		return new UtenteResponseDTO(u.getId(), u.getEmail(), u.getNome(), u.getCognome());
+		return new UtenteResponseDTO(u.getId(), u.getEmail(), u.getNome(), u.getCognome(), u.getRuolo());
 	}
 
 	public static void applyUpdates(Utente u, UtenteUpdateRequestDTO dto) {
@@ -48,6 +48,7 @@ public class UtenteMapper {
         if (dto.getCognome() != null)  u.setCognome(dto.getCognome());
         if (dto.getEmail() != null)    u.setEmail(dto.getEmail());
         if (dto.getPassword() != null) u.setPassword(dto.getPassword());
+        if (dto.getRuolo() != null)    u.setRuolo(dto.getRuolo());
     }
 	
 }

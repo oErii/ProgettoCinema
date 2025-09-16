@@ -12,6 +12,7 @@ import org.elis.demo.model.Utente;
 import org.elis.demo.repository.UtenteRepositoryJPA;
 import org.elis.demo.service.definition.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +26,9 @@ public class UtenteServiceImpl implements UtenteService{
 	@Autowired
 	private UtenteMapper uMapper;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
     @Transactional
     public UtenteResponseDTO aggiungi(UtenteCreateRequestDTO request) throws ConflictException {
@@ -34,7 +38,11 @@ public class UtenteServiceImpl implements UtenteService{
         }
 
         Utente entity = UtenteMapper.toUtente(request);
-        entity.setEmail(email); // forza normalizzazione
+        
+        entity.setRuolo(request.getRuolo());
+		entity.setPassword(passwordEncoder.encode(request.getPassword()));
+        
+        entity.setEmail(email);
         Utente saved = utenteRepository.save(entity);
 
         return uMapper.toUtenteDTO(saved);
@@ -56,6 +64,11 @@ public class UtenteServiceImpl implements UtenteService{
         }
 
         UtenteMapper.applyUpdates(utente, request);
+        
+        if (request.getPassword() != null) {
+            utente.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        
         Utente saved = utenteRepository.save(utente);
         return uMapper.toUtenteDTO(saved);
     }
@@ -66,11 +79,10 @@ public class UtenteServiceImpl implements UtenteService{
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Utente non trovato"));
 
-        // Regola utile: non eliminare se ha biglietti
-        if (utenteRepository.findById(id).isPresent()) {
+        if (utente.getBiglietti() != null && !utente.getBiglietti().isEmpty()) {
             throw new ConflictException("Impossibile eliminare: utente con biglietti associati");
         }
-
+        
         utenteRepository.delete(utente);
     }
 

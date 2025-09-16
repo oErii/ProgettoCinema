@@ -40,7 +40,7 @@ public class GenereController {
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/all/dGenere/{id}")
+    @DeleteMapping("/admin/dGenere/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws NessunRisultatoException {
         genereS.rimuovi(id);
         return ResponseEntity.noContent().build();
