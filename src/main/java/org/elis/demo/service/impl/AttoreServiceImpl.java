@@ -21,6 +21,9 @@ public class AttoreServiceImpl implements AttoreService{
 	
 	@Autowired
     private AttoreRepositoryJPA attoreRepository;
+	
+	@Autowired
+	private AttoreMapper aMapper; 
 
 	@Override
     public AttoreResponseDTO aggiungi(AttoreCreateRequestDTO request) throws ConflictException {
@@ -32,11 +35,11 @@ public class AttoreServiceImpl implements AttoreService{
             throw new ConflictException("Attore già esistente");  //Verifica se quell’attore esiste già nel database
         }
         
-        Attore entity = AttoreMapper.toEntity(request);
+        Attore entity = aMapper.toEntity(request);
         
         Attore saved = attoreRepository.save(entity);
         
-        return AttoreMapper.toResponse(saved);
+        return aMapper.toResponse(saved);
     }
 
 	@Override

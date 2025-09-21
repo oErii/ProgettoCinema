@@ -18,9 +18,9 @@ public class BigliettoMapper {
         return b;
     }
 
-    public static void applyUpdates(Biglietto b, BigliettoUpdateRequestDTO dto, Utente maybeUtente) {
+    public static void applyUpdates(Biglietto b, BigliettoUpdateRequestDTO dto, Utente utente) {
         if (dto.getPosto() != null) b.setPosto(dto.getPosto());
-        if (maybeUtente != null) b.setUtente(maybeUtente);
+        if (utente != null) b.setUtente(utente);
     }
 
     public static BigliettoResponseDTO toResponse(Biglietto b) {

@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AttoreMapper {
-	public static Attore toEntity(AttoreCreateRequestDTO dto) {
+	public Attore toEntity(AttoreCreateRequestDTO dto) {
         Attore a = new Attore();
         a.setNome(dto.getNome());
         a.setCognome(dto.getCognome());
         return a;
     }
 
-    public static void applyUpdates(Attore attore, AttoreUpdateRequestDTO dto) {
+    public void applyUpdates(Attore attore, AttoreUpdateRequestDTO dto) {
         if (dto.getNome() != null) {
             attore.setNome(dto.getNome());
         }
@@ -24,7 +24,7 @@ public class AttoreMapper {
         }
     }
 
-    public static AttoreResponseDTO toResponse(Attore a) {
+    public AttoreResponseDTO toResponse(Attore a) {
         AttoreResponseDTO dto = new AttoreResponseDTO();
         dto.setId(a.getId());
         dto.setNome(a.getNome());
