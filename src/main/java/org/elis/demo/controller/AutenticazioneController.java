@@ -3,9 +3,11 @@ package org.elis.demo.controller;
 import org.elis.demo.DTO.request.LoginRequestDTO;
 import org.elis.demo.DTO.request.RegistrazioneRequestDTO;
 import org.elis.demo.DTO.response.UtenteResponseDTO;
+import org.elis.demo.configuration.JWTUtilities;
 import org.elis.demo.error.exceptions.ConflictException;
 import org.elis.demo.error.exceptions.NessunRisultatoException;
 import org.elis.demo.service.definition.AutenticazioneService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,8 @@ public class AutenticazioneController {
 
 	private final AutenticazioneService aService;
 	
+	private final JWTUtilities jwtUtilities;
+	
 	@PostMapping("/registrazione")
 	public ResponseEntity<UtenteResponseDTO> registrazione(@Valid @RequestBody RegistrazioneRequestDTO request) throws ConflictException {
 		UtenteResponseDTO resp = aService.registrazione(request);
@@ -33,7 +37,7 @@ public class AutenticazioneController {
 	@PostMapping("/login")
 	public ResponseEntity<UtenteResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) throws NessunRisultatoException {
 		UtenteResponseDTO resp = aService.login(request);
-	    return ResponseEntity.ok().body(resp);
+	    return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtilities.generaToken(resp)).body(resp);
 	    
 	}
 }

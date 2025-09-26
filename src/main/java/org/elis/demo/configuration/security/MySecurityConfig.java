@@ -7,7 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,6 +33,9 @@ public class MySecurityConfig {
 			);
 		
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		http.headers(t->t.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+		.sessionManagement(t->t.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		
 		return http.build();
 	}
 }

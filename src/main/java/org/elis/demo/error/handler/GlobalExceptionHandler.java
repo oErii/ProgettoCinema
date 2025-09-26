@@ -1,5 +1,6 @@
 package org.elis.demo.error.handler;
 
+import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.Data;
 
 @Data
@@ -61,5 +64,35 @@ public class GlobalExceptionHandler {
         body.put("errorMessage", ex.getMessage());
         body.put("path", request.getDescription(false));
         return  ResponseEntity.badRequest().body(body);
+    }
+    
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Map<String, String>> handleExpired(ExpiredJwtException ex, WebRequest req) {
+        Map<String, String> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now().toString());
+        body.put("error", HttpStatus.UNAUTHORIZED.name());
+        body.put("errorMessage", "Token scaduto");
+        body.put("path", req.getDescription(false));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Map<String, String>> handleSignature(SignatureException ex, WebRequest req) {
+        Map<String, String> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now().toString());
+        body.put("error", HttpStatus.UNAUTHORIZED.name());
+        body.put("errorMessage", "Firma del token non valida");
+        body.put("path", req.getDescription(false));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<Map<String, String>> handleMalformed(MalformedJwtException ex, WebRequest req) {
+        Map<String, String> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now().toString());
+        body.put("error", HttpStatus.BAD_REQUEST.name());
+        body.put("errorMessage", "Token malformato");
+        body.put("path", req.getDescription(false));
+        return ResponseEntity.badRequest().body(body);
     }
 }
