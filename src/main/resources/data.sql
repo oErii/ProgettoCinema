@@ -1,0 +1,1 @@
+insert into Utente (nome, cognome, email, password, ruolo) values ('Enrico', 'Tarulli', 'enrico.tarulli@gmail.com', 'PasswordAdmin1!', 1);

@@ -1,10 +1,14 @@
 spring:
- datasource:
-  driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/cinemaDB
-  username: root
-  password: root
  jpa:
   show-sql: true
-  hibernate:
-   ddl-auto: update
+
+ profiles:
+  active: jpa
+
+
+server:
+ error:
+  include-binding-errors: always
+  include-message: always
+  include_stacktrace: never
+  include-exception: false
