@@ -3,7 +3,7 @@ spring:
   show-sql: true
 
  profiles:
-  active: jpa
+  active: JPA
 
 
 server:

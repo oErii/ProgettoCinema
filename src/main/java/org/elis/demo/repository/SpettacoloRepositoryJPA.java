@@ -14,6 +14,6 @@ public interface SpettacoloRepositoryJPA extends JpaRepository<Spettacolo, Long>
     
     List<Spettacolo> findByFilm_IdOrderByDataOraAsc(Long filmId);
 
-    List<Spettacolo> findByDataOraBetweenOrderByDataOraAsc(LocalDateTime start, LocalDateTime end);
+    List<Spettacolo> findByFilm_Id(Long filmId);
 
 }

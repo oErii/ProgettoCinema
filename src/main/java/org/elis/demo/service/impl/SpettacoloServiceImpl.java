@@ -1,7 +1,8 @@
 package org.elis.demo.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.util.List;
 import java.util.Optional;
 
 import org.elis.demo.DTO.mapper.SpettacoloMapper;
@@ -93,6 +94,23 @@ public class SpettacoloServiceImpl implements SpettacoloService {
         Spettacolo s = spettacoloRepository.findById(id)
                 .orElseThrow(() -> new NessunRisultatoException("Spettacolo non trovato"));
         spettacoloRepository.delete(s);
+    }
+    
+    @Override
+    public List<Spettacolo> programmazioneFilm(Long filmID) throws NessunRisultatoException {
+     	List<Spettacolo> listaSpettacoliFilm = spettacoloRepository.findByFilm_Id(filmID);
+     	if(listaSpettacoliFilm.isEmpty()) throw new NessunRisultatoException("Nessun Film programmato");
+     	listaSpettacoliFilm.removeIf(s -> s.getOrario().isBefore(LocalDateTime.now()));
+     	return listaSpettacoliFilm;
+    }
+    
+    @Override
+    public List<Spettacolo> programmazioneData(LocalDate data) throws NessunRisultatoException, ConflictException {
+    	if(data.isBefore(LocalDate.now())) throw new ConflictException("Data passata");
+    	List<Spettacolo> listaSpettacoliData = spettacoloRepository.findAll();
+    	if(listaSpettacoliData.isEmpty()) throw new NessunRisultatoException("Nessun Film programmato");
+    	listaSpettacoliData.removeIf(s -> !s.getOrario().toLocalDate().equals(data));
+    	return listaSpettacoliData;
     }
     
 }
